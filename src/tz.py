@@ -1,8 +1,7 @@
-################################################################################
-# test driver for messing with stuff
-################################################################################
-#import datetime
-from datetime import datetime, date, time, tzinfo, timezone, timedelta
+"""
+timezone classes using tzinfo so we can work with aware datetime objects
+"""
+from datetime import datetime, tzinfo, timedelta
 
 ################################################################################
 # taken from https://docs.python.org/3/tutorial/inputoutput.html
@@ -59,7 +58,6 @@ class LocalTimezone(tzinfo):
         tt = _time.localtime(stamp)
         return tt.tm_isdst > 0
 
-Local = LocalTimezone()
 
 
 # A complete implementation of current DST rules for major US time zones.
@@ -174,23 +172,6 @@ class USTimeZone(tzinfo):
             return dst_time
 
 
-Eastern  = USTimeZone(-5, "Eastern",  "EST", "EDT")
-Central  = USTimeZone(-6, "Central",  "CST", "CDT")
-Mountain = USTimeZone(-7, "Mountain", "MST", "MDT")
-Pacific  = USTimeZone(-8, "Pacific",  "PST", "PDT")
 ################################################################################
 # end paste
 ################################################################################
-print('local tz')
-print('current time: {0}'.format(datetime.now(Local)))
-print('utc offset: {0}'.format(Local.utcoffset(datetime.now(Local))))
-print('daylight savings time offset: {0}'.format(Local.dst(datetime.now(Local))))
-print('TZ name: {0}'.format(Local.tzname(datetime.now(Local))))
-print('pacific tz: {0}'.format(Pacific))
-print('current time: {0}'.format(datetime.now(Pacific)))
-print('utc offset: {0}'.format(Pacific.utcoffset(datetime.now(Pacific))))
-print('daylight savings time offset: {0}'.format(Pacific.dst(datetime.now(Pacific))))
-print('TZ name: {0}'.format(Pacific.tzname(datetime.now(Pacific))))
-
-when = datetime.strptime(input('enter a datetime(format: YYYY-MM-DD HH:mm-0800): '), "%Y-%m-%d %H:%M%z")
-print('{0}'.format(when))
