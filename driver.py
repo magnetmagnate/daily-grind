@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
-import sched, time
+import sched
+import time
 import json
 
 s = sched.scheduler(time.time, time.sleep)
 
 # Scheduler test nonsense
+
 
 def repeat_print(to_print, interval):
     print(to_print)
@@ -15,12 +17,12 @@ def repeat_print(to_print, interval):
 title = input("Enter some stuff: ")
 delay = float(input("Input repeat interval in seconds: "))
 
-entry = (title, delay)
+entries = [("test1", 5.0)]
+entries.append((title, delay))
 
 # Dump stuff in a file for testing.
 with open('data.json', 'w') as data_file:
-    json.dump(entry, data_file)
+    json.dump(entries, data_file)
 
 # Repeat forever at interval.
-repeat_print(entry, delay)
-
+repeat_print(title, delay)
