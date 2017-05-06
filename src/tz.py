@@ -1,11 +1,11 @@
 """
 timezone classes using tzinfo so we can work with aware datetime objects
 """
-from datetime import datetime, tzinfo, timedelta
-
-################################################################################
+##########################################################################
 # taken from https://docs.python.org/3/tutorial/inputoutput.html
-################################################################################
+##########################################################################
+from datetime import datetime, tzinfo, timedelta
+import time as _time
 ZERO = timedelta(0)
 HOUR = timedelta(hours=1)
 SECOND = timedelta(seconds=1)
@@ -14,15 +14,15 @@ SECOND = timedelta(seconds=1)
 # (May result in wrong values on historical times in
 #  timezones where UTC offset and/or the DST rules had
 #  changed in the past.)
-import time as _time
-
-STDOFFSET = timedelta(seconds = -_time.timezone)
+STDOFFSET = timedelta(seconds=-_time.timezone)
 if _time.daylight:
-    DSTOFFSET = timedelta(seconds = -_time.altzone)
+    DSTOFFSET = timedelta(seconds=-_time.altzone)
 else:
     DSTOFFSET = STDOFFSET
 
 DSTDIFF = DSTOFFSET - STDOFFSET
+
+
 class LocalTimezone(tzinfo):
 
     def fromutc(self, dt):
@@ -58,15 +58,15 @@ class LocalTimezone(tzinfo):
         tt = _time.localtime(stamp)
         return tt.tm_isdst > 0
 
-
-
 # A complete implementation of current DST rules for major US time zones.
+
 
 def first_sunday_on_or_after(dt):
     days_to_go = 6 - dt.weekday()
     if days_to_go:
         dt += timedelta(days_to_go)
     return dt
+
 
 # US DST Rules
 #
@@ -92,6 +92,7 @@ DSTEND_1987_2006 = datetime(1, 10, 25, 2)
 # on or after Oct 25.
 DSTSTART_1967_1986 = datetime(1, 4, 24, 2)
 DSTEND_1967_1986 = DSTEND_1987_2006
+
 
 def us_dst_range(year):
     # Find start and end times for US DST. For years before 1967, return
@@ -172,6 +173,13 @@ class USTimeZone(tzinfo):
             return dst_time
 
 
-################################################################################
+LOCAL = LocalTimezone()
+EASTERN = USTimeZone(-5, "Eastern", "EST", "EDT")
+CENTRAL = USTimeZone(-6, "Central", "CST", "CDT")
+MOUNTAIN = USTimeZone(-7, "Mountain", "MST", "MDT")
+PACIFIC = USTimeZone(-8, "Pacific", "PST", "PDT")
+
+
+##########################################################################
 # end paste
-################################################################################
+##########################################################################
