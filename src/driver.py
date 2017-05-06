@@ -41,3 +41,4 @@ with open('data.json', 'w') as data_file:
 
 # Repeat forever at interval.
 repeat_print(title, delay)
+
