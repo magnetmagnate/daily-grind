@@ -37,7 +37,7 @@ entries.append(TaskEntry(title, delay))
 
 # Dump stuff in a file for testing.
 with open('data.json', 'w') as data_file:
-    json.dump(entries, data_file, default=jsonDefault)
+    json.dump(entries, data_file, default=jsonDefault, indent=2)
 
 # Repeat forever at interval.
 repeat_print(title, delay)
