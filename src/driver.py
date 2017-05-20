@@ -3,10 +3,9 @@
 import sched
 import time
 import json
+from pprint import pprint
 
 s = sched.scheduler(time.time, time.sleep)
-
-# Scheduler test nonsense
 
 
 class TaskEntry(object):
@@ -20,6 +19,9 @@ class TaskEntry(object):
 
 
 def jsonDefault(object):
+    """
+    Translate an object into a dict in order to write to json
+    """
     return object.__dict__
 
 
@@ -29,15 +31,17 @@ def repeat_print(to_print, interval):
     s.run()
 
 
-title = input("Enter some stuff: ")
-delay = float(input("Input repeat interval in seconds: "))
+# Read the stuff from a file.
+with open('tasks.json') as tasks_file:
+    tasks = json.load(tasks_file)
+    pprint(tasks)
 
-entries = [TaskEntry("test1", 5.0)]
-entries.append(TaskEntry(title, delay))
+title = tasks[0]["title"]
+delay = float(tasks[0]["resetduration"])
 
 # Dump stuff in a file for testing.
-with open('data.json', 'w') as data_file:
-    json.dump(entries, data_file, default=jsonDefault, indent=2)
+with open('tasks.json', 'w') as tasks_file:
+    json.dump(tasks, tasks_file, default=jsonDefault, indent=2)
 
 # Repeat forever at interval.
 repeat_print(title, delay)
