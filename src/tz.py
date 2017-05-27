@@ -2,7 +2,7 @@
 timezone classes using tzinfo so we can work with aware datetime objects
 """
 ##########################################################################
-# taken from https://docs.python.org/3/tutorial/inputoutput.html
+# taken from https://docs.python.org/3/library/datetime.html#tzinfo-objects
 ##########################################################################
 from datetime import datetime, tzinfo, timedelta
 import time as _time

@@ -1,0 +1,10 @@
+[
+  {
+    "title": "test1",
+    "resetduration": 5.0
+  },
+  {
+    "title": "test2",
+    "resetduration": 15.0
+  }
+]
