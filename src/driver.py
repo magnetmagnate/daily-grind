@@ -36,6 +36,10 @@ with open('tasks.json') as tasks_file:
     tasks = json.load(tasks_file)
     pprint(tasks)
 
+# Print all dat stuff in the file
+for task in tasks:
+    print(task["title"] + str(task["resetduration"]))
+
 title = tasks[0]["title"]
 delay = float(tasks[0]["resetduration"])
 
