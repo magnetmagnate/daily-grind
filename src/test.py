@@ -1,7 +1,11 @@
+#!/usr/bin/env python3
+
 """
 test driver for messing with stuff
 """
 from datetime import datetime
+from functools import singledispatch
+import json
 import tz
 
 
@@ -18,8 +22,30 @@ print('daylight savings time offset: {0}'.format(
     tz.PACIFIC.dst(datetime.now(tz.PACIFIC))))
 print('TZ name: {0}'.format(tz.PACIFIC.tzname(datetime.now(tz.PACIFIC))))
 
-WHEN = datetime.strptime(
-    input(
-        'enter a datetime(format: YYYY-MM-DD HH:mm-0800): '),
-    "%Y-%m-%d %H:%M%z")
-print('{0}'.format(WHEN))
+# WHEN = datetime.strptime(
+#    input(
+#        'enter a datetime(format: YYYY-MM-DD HH:mm-0800): '),
+#    "%Y-%m-%d %H:%M%z")
+# print('{0}'.format(WHEN))
+
+# Test datettime serialization
+# https://hynek.me/articles/serialization/ method
+
+
+@singledispatch
+def to_serializable(val):
+    """Default call."""
+    print("Default call.")
+    return str(val)
+
+
+@to_serializable.register(datetime)
+def ts_datetime(val):
+    """datetime overload"""
+    print("datetime overload call.")
+    return val.isoformat() + "Z"
+
+print(json.dumps(
+    {"Blah": datetime.now()},
+    default=to_serializable
+    ))
