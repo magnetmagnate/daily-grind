@@ -64,10 +64,9 @@ pp.pprint(mythingies)
 print("\nTime since last run:")
 print(datetime.now() - mythingies['current_time'])
 
-#print(dumps(
+# print(dumps(
 #    {"current_time": datetime.now()}
 #))
 
 with open('testdata.json', 'w') as output_file:
     dump({"current_time": datetime.now()}, output_file)
-
