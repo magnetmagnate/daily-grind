@@ -8,6 +8,9 @@ from functools import singledispatch
 import json
 import tz
 
+import pprint
+from json_tricks.nonp import dump, load
+
 
 print('local tz')
 print('current time: {0}'.format(datetime.now(tz.LOCAL)))
@@ -45,7 +48,23 @@ def ts_datetime(val):
     print("datetime overload call.")
     return val.isoformat() + "Z"
 
-print(json.dumps(
-    {"Blah": datetime.now()},
-    default=to_serializable
-    ))
+# print(json.dumps(
+#    {"Blah": datetime.now()},
+#    default=to_serializable
+#    ))
+
+with open('testdata.json') as input_file:
+    mythingies = load(input_file)
+
+print("\nData from last run:")
+
+pp = pprint.PrettyPrinter(indent=4)
+pp.pprint(mythingies)
+
+#print(dumps(
+#    {"current_time": datetime.now()}
+#))
+
+with open('testdata.json', 'w') as output_file:
+    dump({"current_time": datetime.now()}, output_file)
+
