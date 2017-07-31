@@ -61,6 +61,9 @@ print("\nData from last run:")
 pp = pprint.PrettyPrinter(indent=4)
 pp.pprint(mythingies)
 
+print("\nTime since last run:")
+print(datetime.now() - mythingies['current_time'])
+
 #print(dumps(
 #    {"current_time": datetime.now()}
 #))
