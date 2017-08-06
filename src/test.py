@@ -61,8 +61,15 @@ print("\nData from last run:")
 pp = pprint.PrettyPrinter(indent=4)
 pp.pprint(mythingies)
 
+this_is_now = datetime.now()
+
 print("\nTime since last run:")
-print(datetime.now() - mythingies['current_time'])
+print(this_is_now - mythingies['current_time'])
+
+if (this_is_now - mythingies['current_time']).days >= 1:
+    print('Longer than 1 day since last run.')
+else:
+    print('Not longer than 1 day since last run.')
 
 # print(dumps(
 #    {"current_time": datetime.now()}
