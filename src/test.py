@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 
 """
 test driver for messing with stuff
@@ -9,7 +9,14 @@ import json
 import tz
 
 import pprint
+import argparse
 from json_tricks.nonp import dump, load
+
+parser = argparse.ArgumentParser(
+    description='Time since last checked and stuff.')
+parser.add_argument('--check', action='store_true')
+
+args = parser.parse_args()
 
 
 print('local tz')
@@ -63,7 +70,7 @@ pp.pprint(mythingies)
 
 this_is_now = datetime.now()
 
-print("\nTime since last run:")
+print("\nTime since last checked:")
 print(this_is_now - mythingies['current_time'])
 
 if (this_is_now - mythingies['current_time']).days >= 1:
@@ -75,5 +82,9 @@ else:
 #    {"current_time": datetime.now()}
 #))
 
-with open('testdata.json', 'w') as output_file:
-    dump({"current_time": datetime.now()}, output_file)
+# Write out new time if checked.
+pp.pprint(args)
+if args.check:
+    print("Checking and resetting.")
+    with open('testdata.json', 'w') as output_file:
+        dump({"current_time": datetime.now()}, output_file)
