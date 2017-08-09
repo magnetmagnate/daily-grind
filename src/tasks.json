@@ -1,10 +1,1 @@
-[
-  {
-    "resetduration": 5.0,
-    "title": "test1"
-  },
-  {
-    "resetduration": 15.0,
-    "title": "test2"
-  }
-]
+[{"title": "test1", "resetduration": {"__timedelta__": null, "days": 2}, "lastreset": {"__datetime__": null, "year": 2017, "month": 8, "day": 7, "hour": 22, "minute": 36, "second": 48, "microsecond": 29325}}, {"title": "test2", "resetduration": {"__timedelta__": null, "days": 7}, "lastreset": {"__datetime__": null, "year": 2017, "month": 8, "day": 7, "hour": 22, "minute": 36, "second": 48, "microsecond": 29325}}]
