@@ -55,6 +55,8 @@ for task in tasks:
           str(task['resetduration']) + " " + str(task['lastreset']))
     print("\nTime since last completed:")
     print(cur_time - task['lastreset'])
+    if task['resetduration'] < (cur_time - task['lastreset']):
+        print("This task needs to be reset!")
     if (cur_time - task['lastreset']).days >= 1:
         print("Longer than 1 day since last run.")
     else:
