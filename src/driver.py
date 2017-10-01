@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 
 # built-in modules
 from datetime import datetime, timedelta
@@ -30,8 +30,12 @@ parser = argparse.ArgumentParser(
     description='Time since last checked and stuff.')
 # if we get this argument, mark all tasks as completed
 parser.add_argument('--reset_all', action='store_true')
+parser.add_argument('--reset', help='Reset specific task.')
 
 args = parser.parse_args()
+
+print("(Debug) Current arguments:")
+pprint(args)
 
 # Read the stuff from a file.
 with open('tasks.json') as tasks_file:
@@ -60,6 +64,11 @@ for task in tasks:
     if args.reset_all:
         print("Resetting all tasks.")
         task['lastreset'] = cur_time
+    if args.reset:
+        if task['title'] == args.reset:
+            print("Resetting task " + str(args.reset))
+            task['lastreset'] = cur_time
+
 
 
 # Dump stuff back in the file
