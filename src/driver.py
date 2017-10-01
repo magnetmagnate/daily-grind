@@ -42,7 +42,10 @@ with open('tasks.json') as tasks_file:
     tasks = load(tasks_file)
     pprint(tasks)
 
+# Set up some useful tracking variables and stuff.
 cur_time = datetime.now()
+task_reset = False
+
 print("\nCurrent time: " + str(cur_time))
 # Print some info about all dat stuff in the file and update reset time
 for task in tasks:
@@ -68,8 +71,10 @@ for task in tasks:
         if task['title'] == args.reset:
             print("Resetting task " + str(args.reset))
             task['lastreset'] = cur_time
+            task_reset = True
 
-
+if args.reset and not task_reset:
+    print("(!!!) Could not find task " + str(args.reset) + " to reset!")
 
 # Dump stuff back in the file
 with open('tasks.json', 'w') as tasks_file:
