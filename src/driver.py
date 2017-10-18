@@ -28,8 +28,11 @@ class TaskEntry(object):
 
 parser = argparse.ArgumentParser(
     description='Time since last checked and stuff.')
-# if we get this argument, mark all tasks as completed
-parser.add_argument('--reset_all', action='store_true')
+parser.add_argument('--reset_all', action='store_true',
+                    help="mark all tasks complete at once to reset their timers.")
+# TODO: error instead of silent failure if given an invalid task title
+parser.add_argument('--reset', '-r', action='store', type=str,
+                    help="mark a specific task complete, specified by title.")
 
 args = parser.parse_args()
 
@@ -59,6 +62,9 @@ for task in tasks:
               str(task['resetduration']) + " since last run.")
     if args.reset_all:
         print("Resetting all tasks.")
+        task['lastreset'] = cur_time
+    elif args.reset == task['title']:
+        print("Resetting task " + task['title'])
         task['lastreset'] = cur_time
 
 
