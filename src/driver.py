@@ -22,7 +22,7 @@ class TaskEntry(object):
     """
 
     def __init__(self, title, resetduration, lastreset=(datetime.min)):
-        self.id = uuid.uuid4()
+        self.id = uuid.uuid4().hex
         self.title = title
         self.resetduration = resetduration
         self.lastreset = lastreset
@@ -51,6 +51,9 @@ task_reset = False
 print("\nCurrent time: " + str(cur_time))
 # Print some info about all dat stuff in the file and update reset time
 for task in tasks:
+    if not 'id' in task:
+        print("ID for task does not exist, creating one.")
+        task['id'] = uuid.uuid4().hex
     if 'lastreset' not in task:  # in case we have a new task
         task['lastreset'] = datetime.min
     print("\n\n" + task['title'] + " " +
