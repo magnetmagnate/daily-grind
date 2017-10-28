@@ -6,6 +6,7 @@ from pprint import pprint
 import sched
 import time
 import argparse
+import uuid
 
 # modules from packages
 from pytz import timezone, utc
@@ -21,6 +22,7 @@ class TaskEntry(object):
     """
 
     def __init__(self, title, resetduration, lastreset=(datetime.min)):
+        self.id = uuid.uuid4().hex
         self.title = title
         self.resetduration = resetduration
         self.lastreset = lastreset
@@ -30,7 +32,7 @@ parser = argparse.ArgumentParser(
     description='Time since last checked and stuff.')
 # if we get this argument, mark all tasks as completed
 parser.add_argument('--reset_all', action='store_true')
-parser.add_argument('--reset', help='Reset specific task.')
+parser.add_argument('--reset', help='Reset specific task by ID.')
 
 args = parser.parse_args()
 
@@ -49,6 +51,9 @@ task_reset = False
 print("\nCurrent time: " + str(cur_time))
 # Print some info about all dat stuff in the file and update reset time
 for task in tasks:
+    if not 'id' in task:
+        print("ID for task does not exist, creating one.")
+        task['id'] = uuid.uuid4().hex
     if 'lastreset' not in task:  # in case we have a new task
         task['lastreset'] = datetime.min
     print("\n\n" + task['title'] + " " +
@@ -70,13 +75,16 @@ for task in tasks:
         print("Resetting all tasks.")
         task['lastreset'] = cur_time
     if args.reset:
-        if task['title'] == args.reset:
+        if task['id'] == args.reset:
             print("Resetting task " + str(args.reset))
             task['lastreset'] = cur_time
             task_reset = True
 
 if args.reset and not task_reset:
     print("(!!!) Could not find task " + str(args.reset) + " to reset!")
+
+print("Dumping tasks:")
+pprint(tasks)
 
 # Dump stuff back in the file
 with open('tasks.json', 'w') as tasks_file:
