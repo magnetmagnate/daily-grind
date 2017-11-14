@@ -33,6 +33,7 @@ parser = argparse.ArgumentParser(
 # if we get this argument, mark all tasks as completed
 parser.add_argument('--reset_all', action='store_true')
 parser.add_argument('--reset', help='Reset specific task by ID.')
+parser.add_argument('--list_all', action='store_true')
 
 args = parser.parse_args()
 
@@ -56,21 +57,10 @@ for task in tasks:
         task['id'] = uuid.uuid4().hex
     if 'lastreset' not in task:  # in case we have a new task
         task['lastreset'] = datetime.min
-    print("\n\n" + task['title'] + " " +
-          str(task['resetduration']) + " " + str(task['lastreset']))
-    print("\nTime since last completed:")
-    print(cur_time - task['lastreset'])
-    if task['resetduration'] < (cur_time - task['lastreset']):
-        print("This task needs to be reset!")
-    if (cur_time - task['lastreset']).days >= 1:
-        print("Longer than 1 day since last run.")
-    else:
-        print("Not longer than 1 day since last run")
-    if (cur_time - task['lastreset']) >= task['resetduration']:
-        print("Longer than " + str(task['resetduration']) + " since last run.")
-    else:
-        print("Not longer than " +
-              str(task['resetduration']) + " since last run.")
+#    print("\n\n" + task['title'] + " " +
+#          str(task['resetduration']) + " " + str(task['lastreset']))
+#    print("\nTime since last completed:")
+#    print(cur_time - task['lastreset'])
     if args.reset_all:
         print("Resetting all tasks.")
         task['lastreset'] = cur_time
@@ -79,13 +69,33 @@ for task in tasks:
             print("Resetting task " + str(args.reset))
             task['lastreset'] = cur_time
             task_reset = True
+    if args.list_all:
+        print('Task ID:\t' + task['id'])
+        print('Task Title:\t' + task['title'])
+        print('Reset Interval:\t' + str(task['resetduration']))
+
+        print('Last Reset Time:\t' + str(task['lastreset']))
+        if task['resetduration'] < (cur_time - task['lastreset']):
+            print("This task needs to be reset!")
+        if (cur_time - task['lastreset']).days >= 1:
+            print("Longer than 1 day since last run.")
+        else:
+            print("Not longer than 1 day since last run")
+        if (cur_time - task['lastreset']) >= task['resetduration']:
+            print("Longer than " + str(task['resetduration']) + " since last run.")
+        else:
+            print("Not longer than " +
+                str(task['resetduration']) + " since last run.")
+
+        print('End of task ' + task['id'] + '\n')
 
 if args.reset and not task_reset:
     print("(!!!) Could not find task " + str(args.reset) + " to reset!")
 
-print("Dumping tasks:")
-pprint(tasks)
+#print("Dumping tasks:")
+#pprint(tasks)
 
 # Dump stuff back in the file
+print("Writing tasks back to file.")
 with open('tasks.json', 'w') as tasks_file:
     dump(tasks, tasks_file)
